@@ -1,18 +1,36 @@
-"All The Code Is Done On Google Colab Where Drive Is Mounted  To Use Test Csv'
+"Mounting Drive Into Google Colab For Accessing The Test CSV"
 from google.colab import drive
 drive.mount('/content/drive')
-
-"Loading The Test CSV"
+"Importing Libraries Of Pandas,Numpy(For Random Number Generating) And Random "
 
 import pandas as panda
-test=panda.read_csv('/content/drive/MyDrive/testt.csv')
-test.head()
+import numpy as num
+import random
 
-"Exporting two column data ID and its random generated corresponding label from the above test csv into submission csv file."
+"Loading The Test CSV And Printing It's Data"
+h=panda.read_csv('/content/drive/MyDrive/testt.csv')
+h.head()
 
-test=panda.read_csv('/content/drive/MyDrive/testt.csv', usecols=['id','target'])
-test.head()
+"Generating Random Numbers In Random Numbbers Column For Test CSV And Printing It's Data"
+test = panda.read_csv('/content/drive/MyDrive/testt.csv')
+test['Random Number'] = num.random.uniform(0,1, test.shape[0])
+print(test)
+
+"Using For Loop With Condition On Target Column Of Test CSV And Generating 1 or 0 on Condition"
+
+for row in test['Random Number']:
+    if row >= 0.5:
+      test['target'] = 1
+    else :
+      test['target'] = 0
+
+print(test)
+
+"Inserting The Two Columns id and Target Into Our sample CSV File From Test CSV File"
+
+sample = test[['id','target']].copy()
+print(sample)
+
 
 "Creating Our Csv File With That Two Exported Columns For Submission On Kaggle"
-
-test.to_csv('submission.csv', index=False)
+sample.to_csv('sample.csv',index=False)
